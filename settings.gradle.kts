@@ -16,6 +16,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // PTQFlipper Repository
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
