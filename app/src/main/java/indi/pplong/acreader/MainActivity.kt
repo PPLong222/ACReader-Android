@@ -12,10 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import indi.pplong.acreader.core.navigation.BasicNavigationHost
 import indi.pplong.acreader.core.navigation.MainNavigationBar
 import indi.pplong.acreader.ui.theme.ACReaderTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +25,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             ACReaderTheme {
                 val navController = rememberNavController()
-                Scaffold(modifier = Modifier.fillMaxSize(), bottomBar =
-                { MainNavigationBar(navController) }
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = { MainNavigationBar(navController) },
                 ) { innerPadding ->
-                    BasicNavigationHost(navController = navController, modifier = Modifier.padding(innerPadding))
+                    BasicNavigationHost(
+                        navController = navController,
+                        modifier = Modifier.padding(innerPadding)
+                    )
                 }
             }
         }
