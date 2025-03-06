@@ -11,6 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import indi.pplong.acreader.core.navigation.BasicNavigationHost
+import indi.pplong.acreader.core.navigation.MainNavigationBar
 import indi.pplong.acreader.ui.theme.ACReaderTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,12 +22,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ACReaderTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                val navController = rememberNavController()
+                Scaffold(modifier = Modifier.fillMaxSize(), bottomBar =
+                { MainNavigationBar(navController) }
+                ) { innerPadding ->
                     Greeting(
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
+                BasicNavigationHost(navController = navController, modifier = Modifier)
             }
         }
     }
