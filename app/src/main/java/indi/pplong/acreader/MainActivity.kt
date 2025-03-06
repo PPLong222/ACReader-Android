@@ -26,12 +26,8 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize(), bottomBar =
                 { MainNavigationBar(navController) }
                 ) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    BasicNavigationHost(navController = navController, modifier = Modifier.padding(innerPadding))
                 }
-                BasicNavigationHost(navController = navController, modifier = Modifier)
             }
         }
     }

@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import indi.pplong.acreader.feature.shelf.ShelfPage
 
 /**
  * @author PPLong
@@ -36,7 +37,6 @@ enum class BasicBottomNavItem(val route: String, val icon: ImageVector, val labe
 
 @Composable
 fun MainNavigationBar(navController: NavController) {
-    var selectedItem by remember { mutableIntStateOf(0) }
     NavigationBar {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
@@ -72,6 +72,7 @@ fun BasicNavigationHost(navController: NavHostController, modifier: Modifier) {
         composable(
             route = BasicBottomNavItem.Home.route
         ) {
+            ShelfPage()
         }
 
         composable(BasicBottomNavItem.Books.route) {
