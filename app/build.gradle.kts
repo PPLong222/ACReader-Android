@@ -76,6 +76,9 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+    // Coil
+    implementation(libs.coil.compose)
+
     // --------------- System Core Dependency End ---------------
 
     // --------------- Feature Core ---------------
@@ -83,6 +86,9 @@ dependencies {
     implementation(libs.jsoup)
     // PTQFlipper
     implementation(libs.ptqflipper)
+    // Apache Compress
+    implementation(libs.commons.compress)
+
     // --------------- Feature Core Dependency End ---------------
 
 }

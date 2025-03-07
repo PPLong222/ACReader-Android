@@ -1,19 +1,16 @@
 package indi.pplong.acreader.core.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -21,6 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import indi.pplong.acreader.R
 import indi.pplong.acreader.feature.shelf.ShelfPage
 
 /**
@@ -28,10 +26,21 @@ import indi.pplong.acreader.feature.shelf.ShelfPage
  * @date 3/5/25 7:16 PM
  */
 
-enum class BasicBottomNavItem(val route: String, val icon: ImageVector, val label: String) {
-    Home("Home", Icons.Filled.Home, "Home"),
+enum class BasicBottomNavItem(
+    val route: String,
+    val res: Int?,
+    val icon: ImageVector?,
+    val label: String
+) {
+    Shelf("Shelf", R.drawable.books, null, "Shelf"),
     Books(
-        "Books", Icons.Default.Menu, "Books"
+        "Books", R.drawable.book_spark, null, "Books"
+    ),
+    Notes(
+        "Notes", R.drawable.notes, null, "Notes"
+    ),
+    Setting(
+        "Setting", null, Icons.Default.Settings, "Setting"
     ),
 }
 
@@ -42,7 +51,14 @@ fun MainNavigationBar(navController: NavController) {
         val currentDestination = navBackStackEntry?.destination
         BasicBottomNavItem.entries.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(item.icon, null) },
+                icon = {
+                    item.res?.let { resId ->
+                        Icon(painterResource(resId), null)
+                    } ?:
+                    item.icon?.let { icon ->
+                        Icon(icon, null)
+                    }
+                },
                 label = { Text(item.label) },
                 selected = currentDestination?.hierarchy?.any {
                     it.route == item.route
@@ -66,11 +82,11 @@ fun BasicNavigationHost(navController: NavHostController, modifier: Modifier) {
 
     NavHost(
         navController = navController,
-        startDestination = BasicBottomNavItem.Home.route,
+        startDestination = BasicBottomNavItem.Shelf.route,
         modifier = modifier
     ) {
         composable(
-            route = BasicBottomNavItem.Home.route
+            route = BasicBottomNavItem.Shelf.route
         ) {
             ShelfPage()
         }
@@ -78,6 +94,15 @@ fun BasicNavigationHost(navController: NavHostController, modifier: Modifier) {
         composable(BasicBottomNavItem.Books.route) {
 
         }
+
+        composable(BasicBottomNavItem.Notes.route) {
+
+        }
+
+        composable(BasicBottomNavItem.Setting.route) {
+
+        }
+
     }
 
 }

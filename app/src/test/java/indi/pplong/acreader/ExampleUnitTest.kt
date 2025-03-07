@@ -1,5 +1,6 @@
 package indi.pplong.acreader
 
+import indi.pplong.acreader.feature.shelf.model.EBookParseEntry
 import org.junit.Test
 
 import org.junit.Assert.*
