@@ -9,13 +9,12 @@ import androidx.room.PrimaryKey
  * @date 3/6/25 2:07 PM
  */
 @Entity(
-    tableName = "ebook_parse_entry"
+    tableName = "ebook_parse_entry",
+    primaryKeys = ["id", "order"]
 )
 data class EBookParseEntry(
-    @PrimaryKey(
-        autoGenerate = true
-    )
     val id: Int,
-    val chapter: Int,
+    val order: Int,
+    val chapterName: String,
     val resUri: String
 )

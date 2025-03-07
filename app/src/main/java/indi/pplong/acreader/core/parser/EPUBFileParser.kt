@@ -1,5 +1,6 @@
 package indi.pplong.acreader.core.parser
 
+import indi.pplong.acreader.feature.shelf.model.EBookParseEntry
 import org.jsoup.Jsoup
 import java.io.File
 
@@ -16,6 +17,7 @@ class EPUBFileParser(filePath: String) : AbstractEBookFileParser(filePath) {
 
     private lateinit var epubFilePath: String
     private lateinit var epubDirPath: String
+    val chapterList = mutableListOf<EBookParseEntry>()
 
     init {
         locateContentPath()
@@ -36,7 +38,7 @@ class EPUBFileParser(filePath: String) : AbstractEBookFileParser(filePath) {
     override fun parseFile() {
         val epubFile = File(epubFilePath)
 
-        val doc = Jsoup.parse(epubFile, "UTF-8", "")
+        val doc = Jsoup.parse(epubFile, "UTF-8")
         title = doc.select("metadata > dc|title").first()?.text()
 
         val coverMeta = doc.select("metadata > meta[name=cover]").first()
@@ -46,6 +48,23 @@ class EPUBFileParser(filePath: String) : AbstractEBookFileParser(filePath) {
             if (coverItem != null) {
                 coverPath = epubDirPath + File.separator + coverItem.attr("href")
             }
+        }
+    }
+
+    override fun parseTocInfo() {
+        val epubFile = File(epubFilePath)
+        val tocFile = File(epubFile.parentFile, "toc.ncx")
+        val doc = Jsoup.parse(tocFile, "UTF-8")
+
+        val navPoints = doc.select("navMap > navPoint")
+
+        navPoints.forEach { navPoint ->
+            val chapterName = navPoint.select("navLabel > text").first()?.text() ?: ""
+            val order = navPoint.attr("playOrder").toInt()
+            val src = navPoint.select("content").attr("src")
+            val path = File(epubFile.parentFile, src).path
+
+            chapterList.add(EBookParseEntry(-1, order, chapterName, path))
         }
     }
 

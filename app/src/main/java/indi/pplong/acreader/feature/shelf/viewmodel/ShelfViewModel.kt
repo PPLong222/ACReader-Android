@@ -40,28 +40,38 @@ class ShelfViewModel @Inject constructor(
 
     fun exportNewBook(filePath: String) {
         val parser = EPUBFileParser(filePath)
-        parser.parseFile()
-        parser.onFileParseComplete()
-        if (parser.title != null && parser.coverPath != null) {
-            viewModelScope.launch {
-                ebookEntryRepository.insert(
-                    EBookEntry(
-                        title = parser.title!!,
-                        coverUri = parser.coverPath!!,
-                        author = "",
-                        indexLocation = filePath,
-                        importDate = System.currentTimeMillis(),
-                        progress = 0.0
-                    )
+
+        viewModelScope.launch {
+            var bookId = -1
+            parser.parseFile()
+            parser.parseTocInfo()
+            ebookEntryRepository.insertEBookEntry(
+                EBookEntry(
+                    title = parser.title!!,
+                    coverUri = parser.coverPath!!,
+                    author = "",
+                    indexLocation = filePath,
+                    importDate = System.currentTimeMillis(),
+                    progress = 0.0
                 )
-                getBookEntryList()
+            )
+            ebookEntryRepository.getAllEbookEntries()
+                .firstOrNull { it.indexLocation == filePath }?.let {
+                    bookId = it.id
+                }
+            parser.chapterList.forEach {
+                launch {
+                    ebookEntryRepository.insertTocEntry(it.copy(id = bookId))
+                }
             }
+
         }
+
     }
 
     private fun getBookEntryList() {
         viewModelScope.launch {
-            val list = ebookEntryRepository.getAll()
+            val list = ebookEntryRepository.getAllEbookEntries()
             setState {
                 copy(bookInfo = list)
             }

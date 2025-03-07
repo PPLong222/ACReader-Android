@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import indi.pplong.acreader.feature.shelf.model.EBookEntry
 import indi.pplong.acreader.feature.shelf.model.EBookEntryDao
+import indi.pplong.acreader.feature.shelf.model.EBookParseEntry
 
 /**
  * Description:
@@ -13,7 +14,7 @@ import indi.pplong.acreader.feature.shelf.model.EBookEntryDao
  * @date 3/6/25 8:51 PM
  */
 @Database(
-    entities = [EBookEntry::class],
+    entities = [EBookEntry::class, EBookParseEntry::class],
     version = 1,
     exportSchema = false
 )

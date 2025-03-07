@@ -12,8 +12,14 @@ import androidx.room.Query
 @Dao
 interface EBookEntryDao {
     @Insert
-    suspend fun insert (info: EBookEntry)
+    suspend fun insertEBookEntry (info: EBookEntry)
 
     @Query("SELECT * from ebook_entry")
-    suspend fun getAll(): List<EBookEntry>
+    suspend fun getAllEBookEntry(): List<EBookEntry>
+
+    @Insert
+    suspend fun insertTocEntry (info: EBookParseEntry)
+
+    @Query("SELECT * from ebook_parse_entry")
+    suspend fun getBookTocEntry(): List<EBookParseEntry>
 }
