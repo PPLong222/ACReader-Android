@@ -17,6 +17,8 @@ abstract class AbstractEBookFileParser(
 
     abstract fun parseFile()
 
+    abstract fun parseTocInfo()
+
     fun onFileParseComplete() {
         Log.d(TAG, "EBook Title: $title, CoverPath: $coverPath")
     }
