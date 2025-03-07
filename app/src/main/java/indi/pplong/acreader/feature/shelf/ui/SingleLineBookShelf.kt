@@ -37,7 +37,7 @@ fun SingleBookItem(bookInfo: BookInfo) {
             .padding(top = 10.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.cover),
+            painter = painterResource(id = R.drawable.ic_launcher_background),
             contentDescription = "Cover",
             contentScale = ContentScale.FillWidth,
             modifier = Modifier

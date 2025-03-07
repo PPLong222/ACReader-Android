@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import indi.pplong.acreader.R
 import indi.pplong.acreader.feature.shelf.ShelfPage
+import indi.pplong.acreader.feature.view.ReadPage
 
 /**
  * @author PPLong
@@ -92,7 +93,7 @@ fun BasicNavigationHost(navController: NavHostController, modifier: Modifier) {
         }
 
         composable(BasicBottomNavItem.Books.route) {
-
+            ReadPage()
         }
 
         composable(BasicBottomNavItem.Notes.route) {

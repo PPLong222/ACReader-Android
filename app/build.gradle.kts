@@ -78,6 +78,8 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     // Coil
     implementation(libs.coil.compose)
+    // Webkit
+    implementation(libs.androidx.webkit)
 
     // --------------- System Core Dependency End ---------------
 
