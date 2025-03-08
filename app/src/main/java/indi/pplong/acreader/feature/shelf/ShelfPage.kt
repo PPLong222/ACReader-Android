@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,8 +23,6 @@ import indi.pplong.acreader.feature.shelf.ui.TripleBookShelf
 import indi.pplong.acreader.feature.shelf.viewmodel.ShelfUiEffect
 import indi.pplong.acreader.feature.shelf.viewmodel.ShelfUiIntent
 import indi.pplong.acreader.feature.shelf.viewmodel.ShelfViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import java.io.File
 
 /**
@@ -65,19 +61,8 @@ fun ShelfPage(navController: NavHostController) {
             }
         }
     }
-    val drawerState =
-        androidx.compose.material3.rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = CoroutineScope(Dispatchers.Main)
     Scaffold(
-        topBar = {
-            ShelfSearchBar(
-                {},
-                {},
-                drawerState,
-                scope,
-                modifier = Modifier.padding(horizontal = 6.dp).fillMaxWidth()
-            )
-        },
+        topBar = { ShelfSearchBar({}, {}, modifier = Modifier.padding(horizontal = 16.dp)) },
         floatingActionButton = { ShelfFAB { filePickerLauncher.launch(arrayOf("*/*")) } }
     ) { innerValues ->
         Column(modifier = Modifier.padding(innerValues)) {
