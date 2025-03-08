@@ -35,6 +35,12 @@ class ShelfViewModel @Inject constructor(
             is ShelfUiIntent.InsertBookInfo -> {
                 exportNewBook(intent.path)
             }
+
+            is ShelfUiIntent.NavigateToBook -> {
+                sendEffect {
+                    ShelfUiEffect.NavigateToReadPage(intent.bookId)
+                }
+            }
         }
     }
 
@@ -64,7 +70,7 @@ class ShelfViewModel @Inject constructor(
                     ebookEntryRepository.insertTocEntry(it.copy(id = bookId))
                 }
             }
-
+            getBookEntryList()
         }
 
     }

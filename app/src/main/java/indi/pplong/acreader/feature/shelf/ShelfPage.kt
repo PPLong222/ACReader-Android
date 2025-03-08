@@ -16,10 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import indi.pplong.acreader.core.navigation.ReadNavScreen
 import indi.pplong.acreader.core.unzipFile
 import indi.pplong.acreader.feature.shelf.ui.ShelfFAB
 import indi.pplong.acreader.feature.shelf.ui.ShelfSearchBar
 import indi.pplong.acreader.feature.shelf.ui.TripleBookShelf
+import indi.pplong.acreader.feature.shelf.viewmodel.ShelfUiEffect
 import indi.pplong.acreader.feature.shelf.viewmodel.ShelfUiIntent
 import indi.pplong.acreader.feature.shelf.viewmodel.ShelfViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +35,7 @@ import java.io.File
  * @date 3/5/25 8:53 PM
  */
 @Composable
-fun ShelfPage() {
+fun ShelfPage(navController: NavHostController) {
     val viewModel: ShelfViewModel = hiltViewModel<ShelfViewModel>()
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
@@ -55,7 +58,9 @@ fun ShelfPage() {
     LaunchedEffect(viewModel.uiEffect) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-
+                is ShelfUiEffect.NavigateToReadPage -> {
+                    navController.navigate(ReadNavScreen(effect.bookId))
+                }
                 else -> {}
             }
         }
@@ -76,8 +81,7 @@ fun ShelfPage() {
         floatingActionButton = { ShelfFAB { filePickerLauncher.launch(arrayOf("*/*")) } }
     ) { innerValues ->
         Column(modifier = Modifier.padding(innerValues)) {
-//            PreviewTripleBookShelf(modifier = Modifier.padding(top = 16.dp))
-            TripleBookShelf(list = uiState.bookInfo, modifier = Modifier.padding(top = 16.dp))
+            TripleBookShelf(list = uiState.bookInfo, modifier = Modifier.padding(top = 16.dp), onIntent = viewModel::sendIntent)
         }
 
     }

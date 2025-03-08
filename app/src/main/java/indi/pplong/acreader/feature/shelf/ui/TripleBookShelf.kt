@@ -1,7 +1,6 @@
 package indi.pplong.acreader.feature.shelf.ui
 
-import android.graphics.BitmapFactory
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -27,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import indi.pplong.acreader.R
 import indi.pplong.acreader.feature.shelf.model.EBookEntry
+import indi.pplong.acreader.feature.shelf.viewmodel.ShelfUiIntent
 
 /**
  * Description:
@@ -36,13 +35,16 @@ import indi.pplong.acreader.feature.shelf.model.EBookEntry
 
 
 @Composable
-fun TriSingleBookItem(entry: EBookEntry) {
+fun TriSingleBookItem(entry: EBookEntry, onBookItemClicked: (Int) -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .width(100.dp)
             .padding(top = 10.dp)
+            .clickable {
+                onBookItemClicked(entry.id)
+            }
     ) {
         AsyncImage(
             model = entry.coverUri,
@@ -58,7 +60,9 @@ fun TriSingleBookItem(entry: EBookEntry) {
             style = MaterialTheme.typography.bodySmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp),
             textAlign = TextAlign.Center,
         )
     }
@@ -76,7 +80,8 @@ fun TriSingleLineBookItemPreview(modifier: Modifier = Modifier) {
             "123",
             System.currentTimeMillis(),
             progress = 0.2
-        )
+        ),
+        onBookItemClicked = {}
     )
 }
 
@@ -98,7 +103,7 @@ fun PreviewTripleBookShelf(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TripleBookShelf(list: List<EBookEntry>, modifier: Modifier) {
+fun TripleBookShelf(list: List<EBookEntry>, modifier: Modifier, onIntent: (ShelfUiIntent) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = modifier.fillMaxWidth(),
@@ -108,7 +113,7 @@ fun TripleBookShelf(list: List<EBookEntry>, modifier: Modifier) {
     )
     {
         items(list) { item ->
-            TriSingleBookItem(item)
+            TriSingleBookItem(item, onBookItemClicked = { onIntent(ShelfUiIntent.NavigateToBook(it)) })
         }
     }
 }

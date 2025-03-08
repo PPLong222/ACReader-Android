@@ -24,7 +24,9 @@ data class ShelfUiState(
 sealed class ShelfUiIntent : UiIntent {
     data object GetBookInfo : ShelfUiIntent()
     data class InsertBookInfo(val path: String) : ShelfUiIntent()
+    data class NavigateToBook(val bookId: Int): ShelfUiIntent()
 }
 
 sealed class ShelfUiEffect : UiEffect {
+    data class NavigateToReadPage(val bookId: Int): ShelfUiEffect()
 }
