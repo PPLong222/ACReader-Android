@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -80,6 +81,11 @@ dependencies {
     implementation(libs.coil.compose)
     // Webkit
     implementation(libs.androidx.webkit)
+    // Kotlin Serialization
+    implementation(libs.kotlinx.serialization.json)
+    // ViewPager 2
+    implementation(libs.androidx.viewpager2)
+
 
     // --------------- System Core Dependency End ---------------
 
