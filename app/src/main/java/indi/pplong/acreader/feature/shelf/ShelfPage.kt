@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import indi.pplong.acreader.core.getFileNameFromUri
 import indi.pplong.acreader.core.navigation.ReadNavScreen
 import indi.pplong.acreader.core.unzipFile
 import indi.pplong.acreader.feature.shelf.ui.ShelfFAB
@@ -40,19 +41,21 @@ fun ShelfPage(navController: NavHostController) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     val filePickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocument(),
-        onResult = { uri ->
+        contract = ActivityResultContracts.OpenDocument(), onResult = { uri ->
             uri?.let {
-                Log.d("123", "uri: ${uri.path}")
-                unzipFile(
-                    context.contentResolver.openInputStream(uri),
+                val targetDirectory = File(
+                    context.filesDir, "books" + File.separator + getFileNameFromUri(context, uri)
+                ).path
+                Log.d("Hust1037", targetDirectory)
+                Log.d("Hust1037", "uri: ${uri.path}")
+                unzipFile(context.contentResolver.openInputStream(uri), targetDirectory)
+                Log.d(
+                    "Hust1037",
                     context.filesDir.path + File.separator + "books" + File.separator + uri.lastPathSegment
                 )
-                viewModel.sendIntent(ShelfUiIntent.InsertBookInfo(context.filesDir.path + File.separator + "books" + File.separator + uri.lastPathSegment))
-
+                viewModel.sendIntent(ShelfUiIntent.InsertBookInfo(targetDirectory))
             }
-        }
-    )
+        })
 
 
     LaunchedEffect(viewModel.uiEffect) {
@@ -61,6 +64,7 @@ fun ShelfPage(navController: NavHostController) {
                 is ShelfUiEffect.NavigateToReadPage -> {
                     navController.navigate(ReadNavScreen(effect.bookId))
                 }
+
                 else -> {}
             }
         }
@@ -75,13 +79,18 @@ fun ShelfPage(navController: NavHostController) {
                 {},
                 drawerState,
                 scope,
-                modifier = Modifier.padding(horizontal = 6.dp).fillMaxWidth()
+                modifier = Modifier
+                    .padding(horizontal = 6.dp)
+                    .fillMaxWidth()
             )
         },
-        floatingActionButton = { ShelfFAB { filePickerLauncher.launch(arrayOf("*/*")) } }
-    ) { innerValues ->
+        floatingActionButton = { ShelfFAB { filePickerLauncher.launch(arrayOf("*/*")) } }) { innerValues ->
         Column(modifier = Modifier.padding(innerValues)) {
-            TripleBookShelf(list = uiState.bookInfo, modifier = Modifier.padding(top = 16.dp), onIntent = viewModel::sendIntent)
+            TripleBookShelf(
+                list = uiState.bookInfo,
+                modifier = Modifier.padding(top = 16.dp),
+                onIntent = viewModel::sendIntent
+            )
         }
 
     }
