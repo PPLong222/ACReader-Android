@@ -7,7 +7,6 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -35,7 +34,7 @@ import java.io.File
 @Composable
 fun ReadPage(modifier: Modifier = Modifier, id: Int) {
     val file =
-        File("/data/user/0/indi.pplong.acreader/files/books/msf:1000018671/OEBPS/html/app01.html")
+        File("/data/user/0/indi.pplong.acreader/files/books/飞狐外传(金庸)/index_split_010.html")
     var htmlContent by remember { mutableStateOf("") }
     WebView.setWebContentsDebuggingEnabled(true)
     LaunchedEffect(Unit) {
@@ -182,7 +181,7 @@ initPaging();
                     }
                 }
 
-                loadUrl("https://appassets.androidplatform.net/books/OEBPS/html/app01.html")
+                loadUrl("https://appassets.androidplatform.net/books/飞狐外传(金庸)/index_split_010.html")
                 Log.d("123", "build html")
             }
         }
