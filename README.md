@@ -4,7 +4,11 @@ Yet nother Andorid Reader App. Meant to provide a beautifully-desigined Reader A
 
 Our prototype design is [here](https://www.figma.com/design/zbOoExfr2S5wQQLIChAKN8/ACReader?node-id=0-1&p=f):
 
-![](https://file.notion.so/f/f/9a846297-de6b-4494-b312-23f8e5db7b7e/569414f0-70d3-4db3-bc38-e4513565e1d5/%E9%A6%96%E9%A1%B5.png?table=block&id=1af72237-1a17-8020-b276-fbe83b28127a&spaceId=9a846297-de6b-4494-b312-23f8e5db7b7e&expirationTimestamp=1741370400000&signature=bjupQZvC1a-5mWdNN3LFPT3OzA2g4kW_1IFl1nieTNQ&downloadName=%E9%A6%96%E9%A1%B5.png)
+![](<https://img.notionusercontent.com/s3/prod-files-secure%2F9a846297-de6b-4494-b312-23f8e5db7b7e%2Fce031e3f-bcc9-4fac-817e-778569c02cd3%2F%E9%A6%96%E9%A1%B5_(1).png/size/w=770?exp=1741694154&sig=gt_5b2-IXhuorq0N01bwMJfbfaT5el16GM-_iCsxwVU>)
+
+![](https://img.notionusercontent.com/s3/prod-files-secure%2F9a846297-de6b-4494-b312-23f8e5db7b7e%2F29eb6b73-0a38-4ef9-a185-a5b773a6bff9%2F%E9%98%85%E8%AF%BB%E9%A1%B5%E9%9D%A2.png/size/w=770?exp=1741694154&sig=naZSGBySdX7RHwPfxvBntJ24Ov4j4kl-T5Ck-zBtanI)
+
+![](https://img.notionusercontent.com/s3/prod-files-secure%2F9a846297-de6b-4494-b312-23f8e5db7b7e%2F4c1f8595-19a8-42b7-b6e0-bf5e3f5410aa%2F%E9%98%85%E8%AF%BB%E7%95%8C%E9%9D%A2%E9%80%89%E9%A1%B9%E5%91%BC%E8%B5%B7.png/size/w=770?exp=1741694154&sig=4F6kA2B43p--6zdKECtY1R86qQezWrwqybL83eZzQ-c)
 
 Some helpful links are as follows:
 
