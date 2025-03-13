@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.toRoute
 import indi.pplong.acreader.R
+import indi.pplong.acreader.feature.notes.NotePage
 import indi.pplong.acreader.feature.shelf.ShelfPage
 import indi.pplong.acreader.feature.view.ReadPage
 import kotlinx.serialization.Serializable
@@ -109,7 +110,7 @@ fun BasicNavigationHost(navController: NavHostController, modifier: Modifier) {
         }
 
         composable(BasicBottomNavItem.Notes.route) {
-
+            NotePage()
         }
 
         composable(BasicBottomNavItem.Setting.route) {
