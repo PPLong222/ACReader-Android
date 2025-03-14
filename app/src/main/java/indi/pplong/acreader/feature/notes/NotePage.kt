@@ -34,11 +34,11 @@ fun NotePage(modifier: Modifier = Modifier) {
     list.add("人工智能（AI）是近年来最具颠覆性的技术之一。AI 系统如今可以执行许多需要人类智慧的任务，例如图像识别、语言翻译，甚至医学诊断。机器学习算法的不断优化，使 AI 变得更加高效和精准。")
     list.add("由人工智能和机器人技术驱动的自动化正在重塑制造业、医疗和金融等行业。企业依赖自动化系统来优化流程、降低成本并提高效率。然而，自动化的发展也导致了一些工作岗位的消失，迫使劳动者不断学习新技能以适应变化。AI 在决策过程中的潜在偏见及其对就业市场的影响，已成为社会关注的重要议题。")
     list.add("教育行业也因科技的发展受益匪浅。从传统课堂教学向在线教育的转变，为学生提供了前所未有的知识获取方式。数字化学习平台，如在线课程、虚拟课堂和教育软件，使学习过程更加互动化和个性化。")
-    val bookchapter = BookChapter("!23", list)
+    val bookchapter = BookChapter("今夜无人入眠", list)
 
     var currentPage by remember { mutableStateOf(ContentPage()) }
     var currentIdx by remember { mutableIntStateOf(0) }
-    BasicReadView(dataLine = currentPage, onSize = {
+    BasicReadView(bookchapter.title,dataLine = currentPage, onSize = {
             size ->
         helper.updateSize(size)
         helper.layoutText(bookchapter)

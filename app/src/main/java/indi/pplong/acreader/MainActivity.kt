@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import indi.pplong.acreader.core.navigation.BasicNavigationHost
@@ -25,9 +26,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             ACReaderTheme {
                 val navController = rememberNavController()
+                val navBackStackEntry = navController.currentBackStackEntryAsState().value
+                val currentDestination = navBackStackEntry?.destination?.route
+                val isBottomBarVisible = currentDestination != "Setting"
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    bottomBar = { MainNavigationBar(navController) },
+                    bottomBar = { if (isBottomBarVisible) MainNavigationBar(navController) },
                 ) { innerPadding ->
                     BasicNavigationHost(
                         navController = navController,

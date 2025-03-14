@@ -1,7 +1,11 @@
 package indi.pplong.acreader.core.parser
 
+import indi.pplong.acreader.core.read.model.book.BookChapter
 import indi.pplong.acreader.feature.shelf.model.EBookParseEntry
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Element
+import org.jsoup.nodes.Node
+import org.jsoup.select.NodeVisitor
 import java.io.File
 
 /**
@@ -43,10 +47,17 @@ class EPUBFileParser(filePath: String) : AbstractEBookFileParser(filePath) {
 
         val coverMeta = doc.select("metadata > meta[name=cover]").first()
         if (coverMeta != null) {
-            val coverId = coverMeta.attr("content")
-            val coverItem = doc.select("manifest > item[id=$coverId]").first()
+            // 先读取标签里的content attr
+            val coverContent = coverMeta.attr("content")
+            /*
+               如果该值只是一个索引的key值, 则manifest看是否有额外声明该资源, 有则使用
+               如果没有, 则说明已是资源地址
+             */
+            val coverItem = doc.select("manifest > item[id=$coverContent]").first()
             if (coverItem != null) {
                 coverPath = epubDirPath + File.separator + coverItem.attr("href")
+            } else {
+                coverPath = epubDirPath + File.separator + coverContent
             }
         }
     }
@@ -56,7 +67,8 @@ class EPUBFileParser(filePath: String) : AbstractEBookFileParser(filePath) {
         val tocFile = File(epubFile.parentFile, "toc.ncx")
         val doc = Jsoup.parse(tocFile, "UTF-8")
 
-        val navPoints = doc.select("navMap > navPoint")
+        // 不使用直接元素, 而是所有的, 因为navPoint可能嵌套
+        val navPoints = doc.select("navMap navPoint")
 
         navPoints.forEach { navPoint ->
             val chapterName = navPoint.select("navLabel > text").first()?.text() ?: ""
@@ -66,6 +78,29 @@ class EPUBFileParser(filePath: String) : AbstractEBookFileParser(filePath) {
 
             chapterList.add(EBookParseEntry(-1, order, chapterName, path))
         }
+    }
+
+    fun parseChapter(chapterUri: String): BookChapter {
+        val doc = Jsoup.parse(File(chapterUri), "UTF-8")
+        // TODO: 不同的epub这里title不一定在h1中
+
+        val title = doc.selectFirst("h1")?.text() ?: ""
+        val list = arrayListOf<String>()
+        doc.body().traverse(object : NodeVisitor {
+            override fun head(node: Node, depth: Int) {
+                if (node is Element) {
+                    if (node.tagName().equals("p")) {
+                        list.add(node.text())
+                        return
+                    } else if (node.tagName().equals("img")) {
+                        list.add(node.outerHtml())
+                        return
+                    }
+                }
+            }
+
+        })
+        return  BookChapter(title, list)
     }
 
 }

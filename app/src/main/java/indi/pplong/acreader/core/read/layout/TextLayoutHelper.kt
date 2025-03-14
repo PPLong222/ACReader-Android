@@ -4,9 +4,11 @@ import android.graphics.Typeface
 import android.text.StaticLayout
 import android.text.TextPaint
 import androidx.compose.ui.unit.IntSize
+import indi.pplong.acreader.core.read.model.ImageLine
 import indi.pplong.acreader.core.read.model.TextLine
 import indi.pplong.acreader.core.read.model.book.BookChapter
 import indi.pplong.acreader.core.read.model.ui.ContentPage
+import org.jsoup.Jsoup
 
 /**
  * Description:
@@ -22,7 +24,8 @@ class TextLayoutHelper() {
 
     val paragraphVerticalPadding = 40F
     val paragraphHorizontalPadding = 40F
-
+    val defaultMediumImageHeight = 800
+    val defaultMediumImageWidth = 800
 
     fun layoutText(
         bookChapter: BookChapter
@@ -33,37 +36,52 @@ class TextLayoutHelper() {
             typeface = Typeface.SERIF
         }
 
-
-
-        bookChapter.lines.forEach { line ->
+        var i = 0
+        while (i < bookChapter.lines.size) {
+            val line = bookChapter.lines[i]
             val actualVisibleWidth = visibleWidth - 2 * paragraphHorizontalPadding
-            val layout = StaticLayout.Builder.obtain(
-                line,
-                0, line.length,
-                paint,
-                actualVisibleWidth.toInt()
-            ).build()
-            var lineIdx = 0
-            while (lineIdx < layout.lineCount) {
-
-                val textLineStartIdx = layout.getLineStart(lineIdx)
-                val textLineEndIdx = layout.getLineEnd(lineIdx)
-                val lineText = TextLine(line.substring(textLineStartIdx, textLineEndIdx))
-                val height = paint.fontMetrics.descent - paint.fontMetrics.ascent + paint.fontMetrics.leading
-                if (checkIfNeedCreateNewPage(currentY + height)) {
+            // handle img
+            if (line.startsWith("<img") && line.endsWith(">")) {
+                if (checkIfNeedCreateNewPage(currentY + defaultMediumImageHeight)) {
                     continue
                 }
-                currentY += height
-                lineText.height = currentY
-                lineText.start = paragraphHorizontalPadding
-                lineText.end = paragraphHorizontalPadding
-                pendingPage.list.add(lineText)
-                lineIdx++
+                // may throw exception
+                val imgDoc = Jsoup.parse(line)
+                val src = imgDoc.select("img").first()?.attr("src") ?: ""
+                // read image height and width
+                val imageLine = ImageLine(src, defaultMediumImageWidth, defaultMediumImageHeight, height = currentY)
+                pendingPage.list.add(imageLine)
+                currentY += defaultMediumImageHeight
+            } else {
+                val layout = StaticLayout.Builder.obtain(
+                    line,
+                    0, line.length,
+                    paint,
+                    actualVisibleWidth.toInt()
+                ).build()
+                var lineIdx = 0
+                while (lineIdx < layout.lineCount) {
+
+                    val textLineStartIdx = layout.getLineStart(lineIdx)
+                    val textLineEndIdx = layout.getLineEnd(lineIdx)
+                    val lineText = TextLine(line.substring(textLineStartIdx, textLineEndIdx))
+                    val height =
+                        paint.fontMetrics.descent - paint.fontMetrics.ascent + paint.fontMetrics.leading
+                    if (checkIfNeedCreateNewPage(currentY + height)) {
+                        continue
+                    }
+                    currentY += height
+                    lineText.height = currentY
+                    lineText.start = paragraphHorizontalPadding
+                    lineText.end = paragraphHorizontalPadding
+                    pendingPage.list.add(lineText)
+                    lineIdx++
+                }
             }
+            i++
             currentY += paragraphVerticalPadding
         }
         onPendingPageComplete()
-
     }
 
     fun updateSize(size: IntSize) {
