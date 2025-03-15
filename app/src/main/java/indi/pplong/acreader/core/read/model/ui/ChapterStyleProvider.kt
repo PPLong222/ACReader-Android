@@ -1,5 +1,6 @@
 package indi.pplong.acreader.core.read.model.ui
 
+import android.graphics.Typeface
 import android.text.TextPaint
 
 /**
@@ -12,7 +13,24 @@ object ChapterStyleProvider {
 
     var paragraphHorizontalPadding = 40F
 
-    var titlePaint = TextPaint()
+    val defaultMediumImageHeight = 800
+    val defaultMediumImageWidth = 800
 
-    val paragraphPaint = TextPaint()
+    val titleTextPaint = TextPaint().apply {
+        color = android.graphics.Color.BLACK
+        textSize = 80F
+        typeface = Typeface.DEFAULT_BOLD
+    }
+
+    val subTitleTextPaint = TextPaint().apply {
+        color = android.graphics.Color.BLACK
+        textSize = 70F
+        typeface = Typeface.DEFAULT_BOLD
+    }
+
+    val paragraphPaint = TextPaint().apply {
+        color = android.graphics.Color.BLACK
+        textSize = 60F
+        typeface = Typeface.SERIF
+    }
 }

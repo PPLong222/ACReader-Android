@@ -99,6 +99,9 @@ class EPUBFileParser(filePath: String) : AbstractEBookFileParser(filePath) {
                     } else if (node.tagName().equals("img")) {
                         list.add(node.outerHtml())
                         return
+                    } else if (node.tagName().equals("h2") ||node.tagName().equals("h1") ) {
+                        list.add(node.outerHtml())
+                        return
                     }
                 }
             }
