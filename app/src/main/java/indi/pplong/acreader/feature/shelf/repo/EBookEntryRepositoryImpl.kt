@@ -23,12 +23,20 @@ class EBookEntryRepositoryImpl @Inject constructor(
         return entryDao.getAllEBookEntry()
     }
 
+    override suspend fun getEbookEntryById(bookId: Int): EBookEntry {
+        return entryDao.getEbookEntryById(bookId)
+    }
+
     override suspend fun insertTocEntry(info: EBookParseEntry) {
         entryDao.insertTocEntry(info)
     }
 
     override suspend fun getAllBookTocEntry(): List<EBookParseEntry> {
         return entryDao.getBookTocEntry()
+    }
+
+    override suspend fun getBookTocEntryById(bookId: Int): List<EBookParseEntry> {
+        return entryDao.getBookTocEntryById(bookId)
     }
 
 }

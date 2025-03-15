@@ -1,6 +1,7 @@
 package indi.pplong.acreader
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -13,9 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import dagger.hilt.android.AndroidEntryPoint
 import indi.pplong.acreader.core.navigation.BasicNavigationHost
 import indi.pplong.acreader.core.navigation.MainNavigationBar
+import indi.pplong.acreader.core.navigation.ReadNavScreen
 import indi.pplong.acreader.ui.theme.ACReaderTheme
 
 @AndroidEntryPoint
@@ -28,7 +31,12 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val navBackStackEntry = navController.currentBackStackEntryAsState().value
                 val currentDestination = navBackStackEntry?.destination?.route
-                val isBottomBarVisible = currentDestination != "Setting"
+                Log.d("123", currentDestination.toString())
+                val isBottomBarVisible = try {
+                    navBackStackEntry?.toRoute<ReadNavScreen>() == null
+                } catch (e: Exception) {
+                    true
+                }
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = { if (isBottomBarVisible) MainNavigationBar(navController) },

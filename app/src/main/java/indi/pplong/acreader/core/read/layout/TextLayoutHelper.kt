@@ -30,6 +30,7 @@ class TextLayoutHelper() {
     fun layoutText(
         bookChapter: BookChapter
     ) {
+        pages.clear()
         val paint = TextPaint().apply {
             color = android.graphics.Color.BLACK
             textSize = 80f

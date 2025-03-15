@@ -73,7 +73,11 @@ class EPUBFileParser(filePath: String) : AbstractEBookFileParser(filePath) {
         navPoints.forEach { navPoint ->
             val chapterName = navPoint.select("navLabel > text").first()?.text() ?: ""
             val order = navPoint.attr("playOrder").toInt()
-            val src = navPoint.select("content").attr("src")
+            var src = navPoint.select("content").attr("src")
+            // 这里暂时先把.xhtml后的#xxxx索引去掉
+            if (src.contains(".xhtml#")) {
+                src = src.substringBeforeLast("#")
+            }
             val path = File(epubFile.parentFile, src).path
 
             chapterList.add(EBookParseEntry(-1, order, chapterName, path))

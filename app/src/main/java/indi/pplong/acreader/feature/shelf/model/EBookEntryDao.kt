@@ -22,4 +22,11 @@ interface EBookEntryDao {
 
     @Query("SELECT * from ebook_parse_entry")
     suspend fun getBookTocEntry(): List<EBookParseEntry>
+
+    @Query("select * from ebook_parse_entry where id = :bookId order by `order`")
+    suspend fun getBookTocEntryById(bookId: Int): List<EBookParseEntry>
+
+    @Query("select * from ebook_entry where id = :bookId")
+    suspend fun getEbookEntryById(bookId: Int): EBookEntry
+
 }

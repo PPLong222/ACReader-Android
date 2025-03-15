@@ -11,7 +11,6 @@ import indi.pplong.acreader.feature.shelf.model.EBookParseEntry
  * @date 3/6/25 5:40 PM
  */
 interface IEBookEntryRepository {
-    @Insert
     suspend fun insertEBookEntry(info: EBookEntry)
 
     suspend fun getAllEbookEntries(): List<EBookEntry>
@@ -19,4 +18,8 @@ interface IEBookEntryRepository {
     suspend fun insertTocEntry (info: EBookParseEntry)
 
     suspend fun getAllBookTocEntry(): List<EBookParseEntry>
+
+    suspend fun getBookTocEntryById(bookId: Int): List<EBookParseEntry>
+
+    suspend fun getEbookEntryById(bookId: Int): EBookEntry
 }

@@ -21,9 +21,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.toRoute
 import indi.pplong.acreader.R
 import indi.pplong.acreader.feature.notes.NotePage
+import indi.pplong.acreader.feature.read.ReadScreen
 import indi.pplong.acreader.feature.setting.SettingPage
 import indi.pplong.acreader.feature.shelf.ShelfPage
-import indi.pplong.acreader.feature.view.ReadPage
 import kotlinx.serialization.Serializable
 
 /**
@@ -103,7 +103,7 @@ fun BasicNavigationHost(navController: NavHostController, modifier: Modifier) {
         composable<ReadNavScreen>
         { backStackEntry ->
             val routeParam = backStackEntry.toRoute<ReadNavScreen>()
-            ReadPage(modifier = Modifier, routeParam.bookId)
+            ReadScreen(modifier = Modifier, routeParam.bookId)
         }
 
         composable(BasicBottomNavItem.Books.route) {
